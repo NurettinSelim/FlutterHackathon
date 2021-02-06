@@ -13,17 +13,6 @@ void main() async {
 
   await Firebase.initializeApp();
 
-  // final document = await getApplicationDocumentsDirectory();
-  // Hive
-  //   ..init(document.path)
-  //   ..registerAdapter(NewsSourceAdapter())
-  //   ..registerAdapter(NewsItemAdapter());
-
-  // await Hive.openBox<List<NewsItem>>("News");
-
-  // await Hive.openBox<NewsSource>("Sources");
-  // NewsService.getSources();
-
   Intl.defaultLocale = 'tr';
   await initializeDateFormatting('tr');
 
