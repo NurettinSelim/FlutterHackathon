@@ -21,7 +21,7 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Merhaba, DashDevs', style: TextStyle(fontWeight: FontWeight.w600)),
+        // title: Text('Merhaba, DashDevs', style: TextStyle(fontWeight: FontWeight.w600)),
       ),
       body: ListView(
         children: [
@@ -32,7 +32,8 @@ class _MainPageState extends State<MainPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   AutoSizeText(
-                    "${authService.user.displayName} Note App'e hoşgeldin :)",
+                    // "${authService.user.displayName} Note App'e hoşgeldin :)",
+                    "Note App'e hoşgeldin :)",
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 24),
                     maxLines: 1,
