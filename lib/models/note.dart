@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Note {
+  String id;
   String lessonName;
   String title;
   String detail;
@@ -10,6 +11,7 @@ class Note {
   String cloudImagePath;
 
   Note({
+    this.id,
     this.lessonName,
     this.title,
     this.detail,
@@ -19,11 +21,12 @@ class Note {
     this.createdAt,
   });
 
-  Note.fromData(Map<String, dynamic> data) {
+  Note.fromData(this.id, Map<String, dynamic> data) {
     lessonName = data['lessonName'];
     title = data['title'];
     detail = data['detail'];
     cloudImagePath = data['imageName'];
+    imageText = data['imageText'];
     createdAt = data['createdAt'];
   }
   Map<String, dynamic> get toMap {
@@ -33,6 +36,7 @@ class Note {
       'detail': detail,
       'imageName': cloudImagePath,
       'createdAt': createdAt,
+      'imageText': imageText,
     };
   }
 

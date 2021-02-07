@@ -8,6 +8,8 @@ import 'package:note_app/services/note_service.dart';
 import 'package:note_app/widgets/const_vars.dart';
 import 'package:note_app/widgets/theme_helper.dart';
 
+import '../wrapper.dart';
+
 class CreateNotePage extends StatefulWidget {
   final String imagePath;
 
@@ -38,35 +40,7 @@ class _CreateNotePageState extends State<CreateNotePage> {
             child: Column(
               children: [
                 SizedBox(height: 24),
-                Row(
-                  children: [
-                    Text(
-                      'Ders:',
-                      style: Theme.of(context).textTheme.headline5.copyWith(fontSize: 18),
-                    ),
-                    SizedBox(width: 16),
-                    Expanded(
-                      child: DropdownButton(
-                        elevation: 8,
-                        isExpanded: true,
-                        items: [
-                          for (var lessonName in Variables.lessonsList)
-                            DropdownMenuItem(
-                              child: Text(lessonName),
-                              value: lessonName,
-                            )
-                        ],
-                        onChanged: (value) {
-                          setState(() {
-                            _lessonValue = value;
-                          });
-                        },
-                        value: _lessonValue,
-                        hint: Text('Ders seçimi'),
-                      ),
-                    )
-                  ],
-                ),
+                selectLesson,
                 SizedBox(height: 16),
                 TextFormField(
                   controller: _noteTitleController,
@@ -100,28 +74,7 @@ class _CreateNotePageState extends State<CreateNotePage> {
                   keyboardType: TextInputType.multiline,
                 ),
                 SizedBox(height: 16),
-                Stack(
-                  children: [
-                    Image.file(File(imagePath)),
-                    Positioned(
-                      bottom: 0,
-                      left: 8,
-                      child: MaterialButton(
-                        color: Colors.black.withOpacity(0.5),
-                        onPressed: () async {
-                          var imageText = await _imageToText.convert(imagePath);
-                          setState(() {
-                            _imageTextController.text = imageText;
-                          });
-                        },
-                        child: Text(
-                          'Resimdeki Metni Yazıya Aktar',
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                imageWithButton,
                 SizedBox(height: 24),
                 TextFormField(
                   maxLines: _imageTextController.text.split('\n').length,
@@ -136,7 +89,6 @@ class _CreateNotePageState extends State<CreateNotePage> {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(primary: ThemeHelper.accentColor, minimumSize: Size(240, 40)),
                   onPressed: () {
-                    print(_lessonValue);
                     if (_formKey.currentState.validate()) {
                       _noteService.saveNote(
                         Note(
@@ -148,6 +100,7 @@ class _CreateNotePageState extends State<CreateNotePage> {
                           createdAt: Timestamp.now(),
                         ),
                       );
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Wrapper()));
                     }
                   },
                   child: Text('Notu Kaydet'),
@@ -160,4 +113,57 @@ class _CreateNotePageState extends State<CreateNotePage> {
       ),
     );
   }
+
+  Stack get imageWithButton => Stack(
+        children: [
+          Image.file(File(imagePath)),
+          Positioned(
+            bottom: 0,
+            left: 8,
+            child: MaterialButton(
+              color: Colors.black.withOpacity(0.5),
+              onPressed: () async {
+                var imageText = await _imageToText.convert(imagePath);
+                setState(() {
+                  _imageTextController.text = imageText;
+                });
+              },
+              child: Text(
+                'Resimdeki Metni Yazıya Aktar',
+                style: Theme.of(context).textTheme.headline6,
+              ),
+            ),
+          ),
+        ],
+      );
+
+  Row get selectLesson => Row(
+        children: [
+          Text(
+            'Ders:',
+            style: Theme.of(context).textTheme.headline5.copyWith(fontSize: 18),
+          ),
+          SizedBox(width: 16),
+          Expanded(
+            child: DropdownButton(
+              elevation: 8,
+              isExpanded: true,
+              items: [
+                for (var lessonName in Variables.lessonsList)
+                  DropdownMenuItem(
+                    child: Text(lessonName),
+                    value: lessonName,
+                  )
+              ],
+              onChanged: (value) {
+                setState(() {
+                  _lessonValue = value;
+                });
+              },
+              value: _lessonValue,
+              hint: Text('Ders seçimi'),
+            ),
+          )
+        ],
+      );
 }

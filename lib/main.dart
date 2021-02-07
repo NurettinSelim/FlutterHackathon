@@ -30,6 +30,7 @@ class MainApp extends StatelessWidget {
         canvasColor: ThemeHelper.lightColor,
         primaryColor: ThemeHelper.darkColor,
         scaffoldBackgroundColor: ThemeHelper.lightColor,
+        cardColor: ThemeHelper.darkColor,
         floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: ThemeHelper.accentColor),
       ),
       themeMode: ThemeMode.light,

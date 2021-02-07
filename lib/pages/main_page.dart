@@ -1,6 +1,6 @@
 import 'package:animate_icons/animate_icons.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:note_app/pages/create_note_page.dart';
 import 'package:note_app/services/auth.dart';
 import 'package:note_app/widgets/main_page_widgets.dart';
 import 'package:note_app/widgets/theme_helper.dart';
@@ -26,13 +26,50 @@ class _MainPageState extends State<MainPage> {
       body: ListView(
         children: [
           Card(
-            child: Column(
-              children: [
-                Text('En Son Alınan Not'),
-                RaisedButton(onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => CreateNotePage()));
-                })
-              ],
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  AutoSizeText(
+                    "${authService.user.displayName} Note App'e hoşgeldin :)",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 24),
+                    maxLines: 1,
+                  ),
+                  SizedBox(height: 10),
+                  AutoSizeText(
+                    'Kenardaki menüden tüm notlarına ulaşabilirsin!',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 24),
+                    maxLines: 1,
+                  ),
+                  SizedBox(height: 10),
+                  AutoSizeText(
+                    'Aşağıdan ise son aldığın notlara ulaşabilirsin!',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 24),
+                    maxLines: 1,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'En Son Alınan Notlar:',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  SizedBox(height: 10),
+                  ExpandedNoteView(),
+                ],
+              ),
             ),
           ),
         ],

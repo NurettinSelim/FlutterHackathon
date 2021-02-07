@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:note_app/models/note.dart';
@@ -26,11 +25,12 @@ class _NoteViewState extends State<NoteView> {
       future: _noteService.getNotesFromLesson(lessonName),
       builder: (BuildContext context, AsyncSnapshot<List<Note>> snapshot) {
         if (snapshot.hasData) {
-          return ListView.builder(
+          return ListView.separated(
             itemBuilder: (ctxt, index) {
               return NoteTile(noteData: snapshot.data[index]);
             },
             itemCount: snapshot.data.length,
+            separatorBuilder: (BuildContext context, int index) => Divider(),
           );
         }
         return Center(child: SpinKitFadingFour(color: ThemeHelper.accentColor, size: 65));
@@ -53,7 +53,7 @@ class NoteTile extends StatelessWidget {
       ),
       subtitle: Text(noteData.detail ?? ''),
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => NotePage(noteData: noteData)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => NotePage(note: noteData)));
       },
     );
   }

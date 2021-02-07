@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   animate_icons: ^1.0.0
+  auto_size_text: ^2.1.0
   cached_network_image: ^2.5.0
   camera: ^0.7.0+2
   cloud_firestore: ^0.16.0
