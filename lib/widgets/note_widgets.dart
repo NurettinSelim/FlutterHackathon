@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:note_app/models/note.dart';
 import 'package:note_app/pages/note_page.dart';
 import 'package:note_app/services/note_service.dart';
 import 'package:note_app/widgets/theme_helper.dart';
@@ -23,13 +24,13 @@ class _NoteViewState extends State<NoteView> {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: _noteService.getNotesFromLesson(lessonName),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<List<Note>> snapshot) {
         if (snapshot.hasData) {
           return ListView.builder(
             itemBuilder: (ctxt, index) {
-              return NoteTile(noteData: snapshot.data.docs[index].data());
+              return NoteTile(noteData: snapshot.data[index]);
             },
-            itemCount: snapshot.data.docs.length,
+            itemCount: snapshot.data.length,
           );
         }
         return Center(child: SpinKitFadingFour(color: ThemeHelper.accentColor, size: 65));
@@ -39,7 +40,7 @@ class _NoteViewState extends State<NoteView> {
 }
 
 class NoteTile extends StatelessWidget {
-  final Map<String, dynamic> noteData;
+  final Note noteData;
 
   const NoteTile({Key key, this.noteData}) : super(key: key);
   @override
@@ -47,10 +48,10 @@ class NoteTile extends StatelessWidget {
     return ListTile(
       trailing: Icon(Icons.arrow_forward_ios),
       title: Text(
-        noteData['title'] ?? 'debug',
+        noteData.title ?? '',
         style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
       ),
-      subtitle: Text(noteData['detail'] ?? 'debug'),
+      subtitle: Text(noteData.detail ?? ''),
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => NotePage(noteData: noteData)));
       },

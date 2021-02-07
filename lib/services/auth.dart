@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:note_app/services/note_service.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -16,6 +17,7 @@ class AuthService {
     ///
     try {
       var result = await _auth.signInWithEmailAndPassword(email: email, password: pass);
+      NoteService.init;
       return result;
     } on FirebaseAuthException catch (e) {
       print(e.code);
@@ -31,9 +33,11 @@ class AuthService {
     }
   }
 
-  Future registerWithEmail(email, pass) async {
+  Future registerWithEmail(username, email, pass) async {
     try {
       var result = await _auth.createUserWithEmailAndPassword(email: email, password: pass);
+      await result.user.updateProfile(displayName: username);
+      NoteService.init;
       return result;
     } on FirebaseAuthException catch (e) {
       print(e.code);
@@ -44,6 +48,7 @@ class AuthService {
   Future signInWithEmail(email, pass) async {
     try {
       var result = await _auth.signInWithEmailAndPassword(email: email, password: pass);
+      NoteService.init;
       return result;
     } on FirebaseAuthException catch (e) {
       print(e.code);
@@ -62,6 +67,7 @@ class AuthService {
         idToken: googleAuth.idToken,
       );
       var result = await _auth.signInWithCredential(credential);
+      NoteService.init;
       return result.user;
     } on FirebaseAuthException catch (e) {
       print(e);

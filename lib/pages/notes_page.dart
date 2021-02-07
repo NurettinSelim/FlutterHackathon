@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:note_app/widgets/const_vars.dart';
 import 'package:note_app/widgets/note_widgets.dart';
 
 class NotesPage extends StatefulWidget {
@@ -7,12 +8,10 @@ class NotesPage extends StatefulWidget {
 }
 
 class _NotesPageState extends State<NotesPage> with SingleTickerProviderStateMixin {
-  List<String> lessonsList = ['Edebiyat', 'Matematik', 'Coğrafya', 'Tarih', 'Fizik'];
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: lessonsList.length,
+      length: Variables.lessonsList.length,
       child: Scaffold(
         appBar: AppBar(
           title: Text('Notlar'),
@@ -20,7 +19,7 @@ class _NotesPageState extends State<NotesPage> with SingleTickerProviderStateMix
             indicatorSize: TabBarIndicatorSize.label,
             isScrollable: true,
             tabs: <Widget>[
-              for (var lesson in lessonsList)
+              for (var lesson in Variables.lessonsList)
                 Tab(
                   child: Text(
                     lesson,
@@ -32,7 +31,7 @@ class _NotesPageState extends State<NotesPage> with SingleTickerProviderStateMix
         ),
         body: TabBarView(
           children: [
-            for (var lesson in lessonsList) NoteView(lessonName: lesson),
+            for (var lessonName in Variables.lessonsList) NoteView(lessonName: lessonName),
           ],
         ),
       ),

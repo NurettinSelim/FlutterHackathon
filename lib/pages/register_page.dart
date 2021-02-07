@@ -15,6 +15,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   final mailController = TextEditingController();
   final passController = TextEditingController();
+  final usernameController = TextEditingController();
 
   bool _isVisible = true;
 
@@ -37,6 +38,20 @@ class _RegisterPageState extends State<RegisterPage> {
               key: _formKey,
               child: Column(
                 children: [
+                  TextFormField(
+                    controller: usernameController,
+                    decoration: InputDecoration(
+                      labelText: 'Kullanıcı Adı',
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(16.0)),
+                    ),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Kullanıcı adı boş bırakılamaz.';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 20),
                   TextFormField(
                     controller: mailController,
                     keyboardType: TextInputType.emailAddress,
@@ -68,7 +83,7 @@ class _RegisterPageState extends State<RegisterPage> {
               isRegister: true,
               onPressed: () async {
                 if (_formKey.currentState.validate()) {
-                  var result = await _auth.registerWithEmail(mailController.text, passController.text);
+                  var result = await _auth.registerWithEmail(usernameController.text, mailController.text, passController.text);
                   if (result is FirebaseException) {
                     final snackBar = SnackBar(content: Text(result.message ?? 'Bilinmeyen bir hata oluştu.'));
                     _scaffoldKey.currentState.showSnackBar(snackBar);

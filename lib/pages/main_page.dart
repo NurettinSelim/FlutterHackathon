@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:animate_icons/animate_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:note_app/pages/create_note_page.dart';
 import 'package:note_app/services/auth.dart';
+import 'package:note_app/widgets/main_page_widgets.dart';
 import 'package:note_app/widgets/theme_helper.dart';
 
 import 'notes_page.dart';
@@ -16,20 +13,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final picker = ImagePicker();
-
-  Future<void> getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
-
-    setState(() {
-      if (pickedFile != null) {
-        print(pickedFile.path);
-      } else {
-        print('No image selected.');
-      }
-    });
-  }
-
   AnimateIconController controller = AnimateIconController();
   final authService = AuthService();
 
@@ -38,10 +21,7 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
-          'Merhaba, DashDevs',
-          style: TextStyle(fontWeight: FontWeight.w600),
-        ),
+        title: Text('Merhaba, DashDevs', style: TextStyle(fontWeight: FontWeight.w600)),
       ),
       body: ListView(
         children: [
@@ -49,38 +29,22 @@ class _MainPageState extends State<MainPage> {
             child: Column(
               children: [
                 Text('En Son Alınan Not'),
+                RaisedButton(onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => CreateNotePage()));
+                })
               ],
             ),
           ),
         ],
       ),
-      floatingActionButton: SpeedDial(
-        animatedIcon: AnimatedIcons.menu_close,
-        overlayOpacity: 0.4,
-        tooltip: 'Speed Dial',
-        children: [
-          SpeedDialChild(
-            child: Icon(FontAwesomeIcons.edit),
-            label: 'Yazıyla Not Ekle',
-            labelBackgroundColor: ThemeHelper.darkColor,
-            onTap: () {},
-          ),
-          SpeedDialChild(
-            child: Icon(FontAwesomeIcons.camera),
-            label: 'Kameradan Not Çek',
-            labelBackgroundColor: ThemeHelper.darkColor,
-            onTap: () {
-              getImage();
-            },
-          ),
-        ],
-      ),
+      floatingActionButton: FABSpeedDial(),
       drawer: Drawer(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             UserAccountsDrawerHeader(
-              accountName: Text(authService.user.displayName ?? 'debug'),
-              accountEmail: Text(authService.user.email ?? 'debug'),
+              accountName: Text(authService.user.displayName ?? ''),
+              accountEmail: Text(authService.user.email ?? ''),
             ),
             ListTile(
               title: Text(
@@ -92,6 +56,14 @@ class _MainPageState extends State<MainPage> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => NotesPage()));
               },
             ),
+            Spacer(),
+            TextButton.icon(
+              onPressed: () {
+                authService.signOut();
+              },
+              icon: Icon(Icons.logout, color: ThemeHelper.accentColor),
+              label: Text('Çıkış Yap', style: Theme.of(context).textTheme.headline6),
+            )
           ],
         ),
       ),
